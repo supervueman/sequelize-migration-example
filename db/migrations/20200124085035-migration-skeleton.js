@@ -1,31 +1,38 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.sequelize.transaction(t => {
-      return Promise.all([
-        queryInterface.addColumn('User', 'petName', {
-          type: Sequelize.STRING
-        }, {
-          transaction: t
+  up: (queryInterface, Sequelize) =>
+    queryInterface.sequelize.transaction(transaction =>
+      Promise.all([
+        queryInterface.addColumn(
+          "User",
+          "petName",
+          {
+            type: Sequelize.STRING
+          },
+          {
+            transaction
+          }
+        ),
+        queryInterface.addColumn(
+          "User",
+          "favoriteColor",
+          {
+            type: Sequelize.STRING
+          },
+          {
+            transaction
+          }
+        )
+      ])
+    ),
+  down: queryInterface =>
+    queryInterface.sequelize.transaction(transaction =>
+      Promise.all([
+        queryInterface.removeColumn("User", "petName", {
+          transaction
         }),
-        queryInterface.addColumn('User', 'favoriteColor', {
-          type: Sequelize.STRING,
-        }, {
-          transaction: t
+        queryInterface.removeColumn("User", "favoriteColor", {
+          transaction
         })
-      ]);
-    });
-  },
-
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.sequelize.transaction(t => {
-      return Promise.all([
-        queryInterface.removeColumn('User', 'petName', {
-          transaction: t
-        }),
-        queryInterface.removeColumn('User', 'favoriteColor', {
-          transaction: t
-        })
-      ]);
-    });
-  }
+      ])
+    )
 };
